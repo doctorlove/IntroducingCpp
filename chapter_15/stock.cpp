@@ -18,4 +18,11 @@ double stock_prices::Stock::next_price()
     last_price += last_price * percent; 
     return last_price;
 }
- 
+
+double stock_prices::Bond::next_price()
+{
+    last_price *= 1.0 + percent; // should really be time based, like interest once a year, but std::chrono is hard
+    // could maybe do every n-th tick instead? 
+    return last_price;
+}
+
