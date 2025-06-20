@@ -45,11 +45,28 @@ void chapter_12()
 void chapter_13()
 {
     using namespace stock_prices;
-    auto asset{std::make_unique<Stock>("Coffee", 4.8, 0.0113 )};
+    auto asset{ std::make_unique<Stock>("Coffee", 4.8, 0.0113) };
     std::cout << asset->get_name() << ": " << asset->next_price() << '\n';
 
     // then put in vector
+    std::vector<std::unique_ptr<Asset>> assets; // reserve?
+    assets.push_back(std::make_unique<Stock>("Coffee", 4.8, 0.0113));
 
+    // trading game?
+    // Was in Example 7-2. A trading game first
+    // Then Example 9-1. The new trading game
+    // also in main
+}
+
+void chapter_14()
+{
+    // trading game against a bot?
+    // std::variant for bot/player?
+}
+
+void chapter_15()
+{
+    //std::formatter
 }
 
 int main()
