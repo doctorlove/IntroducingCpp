@@ -23,7 +23,7 @@ void chapter_11()
 }
 
 
-void chapter_12()
+void chapter_13()
 {
     // polymorphism means a new base class... 
     // and public/private inheritence
@@ -40,28 +40,36 @@ void chapter_12()
     std::cout << volatile_asset.get_name() << ": " << volatile_asset.next_price() << '\n';
     std::cout << fixed_rate_asset.get_name() << ": " << fixed_rate_asset.next_price() << '\n';
     // Introduce how to test and do this in depth
+
+    // vector of various stock
+
+    // trading game?
+    // Was in Example 7-2. A trading game first
+    // Then Example 9-1. The new trading game
+    // also in main
+    // 
 }
 
-void chapter_13()
+void chapter_12()
 {
     using namespace stock_prices;
     auto asset{ std::make_unique<Stock>("Coffee", 4.8, 0.0113) };
+    std::cout << (*asset).get_name() << ": " << asset->next_price() << '\n';
     std::cout << asset->get_name() << ": " << asset->next_price() << '\n';
 
     // then put in vector
     std::vector<std::unique_ptr<Asset>> assets; // reserve?
     assets.push_back(std::make_unique<Stock>("Coffee", 4.8, 0.0113));
 
-    // trading game?
-    // Was in Example 7-2. A trading game first
-    // Then Example 9-1. The new trading game
-    // also in main
+
 }
 
 void chapter_14()
 {
     // trading game against a bot?
     // std::variant for bot/player?
+
+    //https://www.cppstories.com/2018/06/variant/ does say polymorphism without vtables
 }
 
 void chapter_15()
