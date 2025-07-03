@@ -114,6 +114,19 @@ void chapter_12()
     std::vector<std::unique_ptr<Asset>> assets; // reserve?
     assets.push_back(std::make_unique<Stock>("Coffee", 4.8, 0.0113));
 
+    auto shared_asset{ std::make_shared<Stock>("Coffee", 4.8, 0.0113) };
+    auto joint_asset{ shared_asset };
+
+    std::weak_ptr just_looking{ joint_asset };
+    if (auto now_using = just_looking.lock())
+    {
+        std::cout << "Using the shared pointer\n";
+    }
+    else
+    {
+        std::cout << "Unable to use the shared pointer\n";
+    }
+
     int value{ 42 };
     int * pointer_to_value = &value;
     int & reference_to_value = value;
@@ -143,6 +156,8 @@ void chapter_14()
     // would a visit to a buy/sell work? But that needs to mutate state
 
     //https://www.cppstories.com/2018/06/variant/ does say polymorphism without vtables
+
+    // maybe a cache? (mention in chapter 12)
 }
 
 void chapter_15()
