@@ -1,10 +1,29 @@
 #pragma once
 
+//#include <charconv> //from chars
+#include <format>
 #include <random>
+#include <ranges>
 #include <string>
 
 namespace stock_prices
 {
+    class Price
+    {
+        double price{};
+    public:
+        explicit Price(double price)
+            : price(price)
+        {
+
+        }
+
+        double operator()() const
+        { 
+            return price; 
+        }
+    };
+
     class Asset
     {
     public:
@@ -60,3 +79,49 @@ namespace stock_prices
         double next_price() override;
     };
 }
+
+// Based on
+//https://en.cppreference.com/w/cpp/utility/format/formatter.html
+
+//https://www.cppstories.com/2022/custom-stdformat-cpp20/
+// has
+//template <>
+//struct std::formatter<MyType> {
+//    constexpr auto parse(std::format_parse_context& ctx) {
+//        return /* */;
+//    }
+//
+//    auto format(const MyType& obj, std::format_context& ctx) const {
+//        return std::format_to(ctx.out(), /* */);
+//    }
+//};
+
+template<>
+struct std::formatter<stock_prices::Price, char>
+{
+    char currency_sign{ '$' };
+    template<class ParseContext>
+    constexpr ParseContext::iterator parse(ParseContext& ctx)
+    {
+        // ctx is the stuff after a colon, so use {:£} etc
+        auto it = ctx.begin();
+        if (it == ctx.end())
+            return it;
+
+        if (*it != '}')
+        {
+            currency_sign = *it;
+            ++it;
+        }
+        if (it != ctx.end() && *it != '}')
+            throw std::format_error("Invalid format args for Price.");
+
+        return it;
+    }
+
+    template<class FmtContext>
+    FmtContext::iterator format(const stock_prices::Price & price, FmtContext& ctx) const
+    {
+        return std::format_to(ctx.out(), "{}{:.2f}", currency_sign, price());
+    }
+};

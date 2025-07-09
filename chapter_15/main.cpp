@@ -2,9 +2,17 @@
 #include <iostream>
 #include <memory>
 #include <print>
+#include <type_traits>
 #include <vector>
 
 #include "stock.h"
+
+void tests()
+{
+    using namespace stock_prices;
+    assert(std::format("Price {}", Price{ 100 }) == "Price $100.00");
+    assert(std::format("Price {:£}", Price{ 100 }) == "Price £100.00");
+}
 
 // want some polymorphism (12)
 // and smart pointers (13)
@@ -96,6 +104,42 @@ void chapter_13()
 
     // vector of various stock
 
+    // some testing too?
+    // need type_traits
+    static_assert(std::is_abstract<Asset>());
+    static_assert(std::is_polymorphic<Asset>());
+    static_assert(std::is_polymorphic<Stock>());
+    // note
+    // https://en.cppreference.com/w/cpp/utility/format/formatter.html
+    // has type traits mentioned
+
+    // TODO what's the best way to do this?
+    std::vector<std::unique_ptr<Asset>> assets;
+    assets.emplace_back(std::make_unique<Stock>("Coffee", 100.0, 0.25));
+    assets.push_back(std::make_unique<Bond>("FixedRateBond", 100.0, 0.004)); // this will go up - should I have a lottery  tickets instead
+    /// or just make the stock maybe go up loads?
+
+    // Also
+    //https://stackoverflow.com/questions/3283778/why-can-i-not-push-back-a-unique-ptr-into-a-vector
+    // if we make it first, we have an lavlue so would need to move
+    // How would emplace work when I need to specify the type?
+
+    // Aside, 
+    // https://www.sandordargo.com/blog/2023/04/12/vector-of-unique-pointers to avoid copies from an initializer list
+
+    // no raw loops
+    for (int i=0; i<100; ++i)
+    {
+        for (auto& asset : assets)
+        {
+            std::cout << asset->get_name() << ": " << asset->next_price() << '\n';
+        }
+    }
+    //cautious bot picking bonds
+    // reckless... waiting out for a big profit?
+
+    
+
     // trading game?
     // Was in Example 7-2. A trading game first
     // Then Example 9-1. The new trading game
@@ -109,6 +153,7 @@ void chapter_12()
     auto asset{ std::make_unique<Stock>("Coffee", 4.8, 0.0113) };
     std::cout << (*asset).get_name() << ": " << asset->next_price() << '\n';
     std::cout << asset->get_name() << ": " << asset->next_price() << '\n';
+    asset.reset( std::make_unique<Stock>("Tea", 4.8, 0.0113).release() ); //!
 
     // then put in vector
     std::vector<std::unique_ptr<Asset>> assets; // reserve?
@@ -169,6 +214,8 @@ void chapter_15()
 
 int main()
 {
+    tests();
+
     chapter_11();
     chapter_12();
     chapter_13();
