@@ -1,9 +1,7 @@
 #pragma once
 
-//#include <charconv> //from chars
 #include <format>
 #include <random>
-#include <ranges>
 #include <string>
 
 namespace stock_prices
@@ -12,15 +10,15 @@ namespace stock_prices
     {
         double price{};
     public:
-        explicit Price(double price)
+        explicit Price(double price) // Opportunity to ban negatives
             : price(price)
         {
 
         }
 
         double operator()() const
-        { 
-            return price; 
+        {
+            return price;
         }
     };
 
@@ -29,51 +27,37 @@ namespace stock_prices
     public:
         virtual ~Asset() = default;
         virtual std::string get_name() const = 0;
+        virtual double get_price() const = 0;
         virtual double next_price() = 0;
     };
 
-    class Stock: public Asset
-    {
-        std::string name{}; 
-        double last_price{}; 
-        double volatility{}; 
-        std::default_random_engine gen; // TODO how to test
-        std::normal_distribution<double> distrib; 
-
-    public:
-        Stock(const std::string & stock_name,
-            double start_price,
-            double start_volatility);
-
-        Stock(const Stock & other) = delete;
-        Stock(Stock && other) noexcept = default;
-
-        Stock & operator = (const Stock & other) = delete;
-        Stock & operator = (Stock && other) noexcept = default;
-
-        std::string get_name() const override
-        {
-            return name;
-        }
-
-        double next_price() override;
-    };
-
-    class Bond : public Asset
+    class Stock : public Asset
     {
         std::string name{};
         double last_price{};
-        double percent;
+        double volatility{};
+        std::default_random_engine gen;
+        std::normal_distribution<double> distrib;
+
     public:
-        Bond(const std::string & name,
+        Stock(const std::string& stock_name,
             double start_price,
-            double percent) : name(name), last_price(start_price), percent(percent)
-        {
-        }
+            double start_volatility);
+
+        Stock(const Stock& other) = delete;
+        Stock(Stock&& other) noexcept = default;
+
+        Stock& operator = (const Stock& other) = delete;
+        Stock& operator = (Stock&& other) noexcept = default;
 
         std::string get_name() const override
         {
             return name;
+        }
+
+        double get_price() const override
+        {
+            return last_price;
         }
 
         double next_price() override;
@@ -96,10 +80,13 @@ namespace stock_prices
 //    }
 //};
 
+// seems to be calling the functions twice
+// but Bartek mentioned that
+
 template<>
 struct std::formatter<stock_prices::Price, char>
 {
-    char currency_sign{ '$' };
+    std::string currency_sign{ "$" };
     template<class ParseContext>
     constexpr ParseContext::iterator parse(ParseContext& ctx)
     {
@@ -108,11 +95,17 @@ struct std::formatter<stock_prices::Price, char>
         if (it == ctx.end())
             return it;
 
-        if (*it != '}')
-        {
-            currency_sign = *it;
-            ++it;
-        }
+        //if (*it != '}')
+        //{
+        //    currency_sign = *it;
+        //    ++it;
+        //}
+        auto start = it;
+        while (it != ctx.end() && *it != '}') ++it;
+
+        if(start != it)
+            currency_sign = std::string(start, it);
+
         if (it != ctx.end() && *it != '}')
             throw std::format_error("Invalid format args for Price.");
 
