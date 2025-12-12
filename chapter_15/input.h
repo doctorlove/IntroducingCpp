@@ -1,7 +1,6 @@
 #pragma once
 
 #include <expected>
-#include <functional>
 #include <istream>
 #include <string>
 #include <vector>
@@ -10,14 +9,21 @@ namespace stock_prices
 {
     std::expected<double, std::string> get_number(std::istream & input_stream);
 
+    template<typename T>
     std::vector<double> get_prices(std::istream & input_stream,
-		    std::function<void ()> prompt);
+            T prompt) //<1>
+    {
+        prompt(); //<2>
+        std::vector<double> numbers{};
+        auto number = stock_prices::get_number(input_stream);
+        while(number.has_value())
+        {
+            numbers.push_back(number.value());
+            prompt(); //<3>
+            number = stock_prices::get_number(input_stream);
+        }
+        return numbers;
+    }
 
-    std::vector<double> get_prices(double price, size_t count);
-    std::vector<double> get_prices(double price, size_t count, double volatility);
-    std::vector<double> get_prices(double price, size_t count,
-		    std::function<double()> next_price);
-
-    std::vector<double> read_from_file(const std::string & filename); //<1>
     void test_input();
 } 

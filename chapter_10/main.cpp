@@ -1,0 +1,19 @@
+#include <iostream>
+
+#include "stock_v1.h"
+
+int main()
+{
+    stock_prices::Stock coffee{"Coffee", 4.8, 0.0113}; //<1>
+
+    std::cout << coffee.name  //<2>
+        << ": price " << coffee.last_price //<2>
+        << '\n';
+
+    coffee.name = "Tea"; //<3>
+    coffee.last_price = -19.2; //<3>
+
+    std::cout << coffee.name  //<4>
+        << ": price " << coffee.last_price //<4>
+        << '\n';
+}

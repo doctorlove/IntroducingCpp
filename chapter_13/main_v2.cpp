@@ -1,10 +1,10 @@
-#include "stock.h"
+#include "asset.h"
 #include "trade.h"
 
 int main()
 {
 using namespace stock_prices;
-    test_stock();
+    test_asset();
     test_trades();
 
     std::unique_ptr<Asset> asset{

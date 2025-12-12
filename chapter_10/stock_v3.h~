@@ -1,0 +1,39 @@
+#pragma once
+
+#include <random> //<1>
+#include <string>
+
+namespace stock_prices
+{
+    class Stock
+    {
+        std::string name{};
+        double last_price{};
+        double volatility{};
+        std::default_random_engine gen{std::random_device{}()}; //<2>
+        std::normal_distribution<double> distrib{}; //<3>
+
+    public:
+        Stock(const std::string & stock_name,
+            double start_price,
+            double start_volatility) 
+        : 
+            name(stock_name), 
+            last_price(start_price), 
+            volatility(start_volatility)
+        {
+        }
+        std::string get_name() const 
+        {
+            return name;
+        }
+        double next_price() //<5>
+        {
+            double percent  = volatility * distrib(gen); 
+            last_price += last_price * percent; 
+            return last_price;
+        }
+    };
+}
+
+

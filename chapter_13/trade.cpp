@@ -17,7 +17,7 @@ double stock_prices::trading_game(Exchange & exchange)
         auto status = std::format("Funds ${:.2f}, Shares {}",
             funds, number_of_shares);
         std::println("{}", status);
-	    const auto price = exchange.next_price(); //<3>
+	const auto price = exchange.next_price(); //<3>
         auto price_message = std::format("Current price: ${:.2f}", price);
         std::println("{: >{}}", price_message, status.size());
         std::println("Press (s) to sell, (b) to buy, (q) to quit");
@@ -35,7 +35,7 @@ double stock_prices::trading_game(Exchange & exchange)
             }
             else
             {
-		        std::println("No stock to sell");
+		std::println("No stock to sell");
             }
         }
         else if (choice == 'b')
@@ -56,10 +56,7 @@ double stock_prices::trading_game(Exchange & exchange)
             playing = false;
         }
     }
-    auto profit = funds - initial_funds;
-    std::println("Total profit ${:.2f}", profit);
-    std::println("Game over");
-    return profit;
+    return funds - initial_funds;
 }
 
 double stock_prices::Exchange::next_price()
@@ -68,7 +65,7 @@ double stock_prices::Exchange::next_price()
     {
         throw std::invalid_argument{"No asset available"};
     }
-    prices.push_back(asset->get_price()); // save last one
+    prices.push_back(asset->get_price());
     return asset->next_price();
 }
 

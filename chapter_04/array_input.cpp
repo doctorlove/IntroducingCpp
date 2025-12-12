@@ -30,7 +30,7 @@ std::expected<double, std::string> get_number(std::istream & input_stream)
 
 void show_numbers(const std::array<double, 5u> & numbers)
 {
-    for(const auto & number: numbers) //<1>
+    for(const auto number: numbers) //<1>
     {
         std::cout << number << '\n'; //<2>
     }
@@ -39,7 +39,7 @@ void show_numbers(const std::array<double, 5u> & numbers)
 void max_number(const std::array<double, 5u> & numbers)
 {
     double biggest = numbers[0]; //<1>
-    for(const auto & number: numbers) //<2>
+    for(const auto number: numbers) //<2>
     {
         if(number > biggest) //<3>
 	{
@@ -51,23 +51,25 @@ void max_number(const std::array<double, 5u> & numbers)
 
 int main()
 {
-    std::cout << "Please enter some numbers.\n>";
+    std::cout << "Please enter some numbers.\n";
     std::array<double, 5u> numbers{}; //<1>
     size_t count = 0u; //<2>
     while(count < numbers.size()) //<3>
     {
+        std::cout << '>';
         auto number = get_number(std::cin);
         if(number.has_value())
         {
             numbers[count] = number.value(); //<4>
-            std::cout << "Got " << number.value() << " thanks!\n>"; 
+            std::cout << "Got " << number.value() << " thanks!\n"; 
         }
         else
         {
-            std::cout << number.error() << '\n';
+            std::cout << number.error() << "\n";
         }
         ++count; //<5>
     }
+    show_numbers(numbers);
 }
 
 

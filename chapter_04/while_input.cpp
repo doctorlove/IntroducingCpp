@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-std::expected<double, std::string> get_number(std::istream & input_stream) 
+std::expected<double, std::string> get_number(std::istream & input_stream) //<1>
 {
     double number{};
     input_stream >> number;
@@ -16,12 +16,18 @@ std::expected<double, std::string> get_number(std::istream & input_stream)
 int main()
 {
     std::cout << "Please enter a number.\n>";
-    auto number = get_number(std::cin);
-    while(number.has_value()) //<1>
-    { //<2>
-        std::cout << "Got " << number.value() << " thanks!\n>"; 
-        number = get_number(std::cin); 
+    while(true) //<2>
+    { //<3>
+        auto number = get_number(std::cin);
+        if(number.has_value()) //<4>
+        {
+            std::cout << "Got " << number.value() << " thanks!\n>"; 
+        }
+        else
+        {
+            std::cout << number.error() << '\n'; //<5>
+            break; //<6>
+        }
     }
-    std::cout << number.error() << '\n'; //<3>
 }
 

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory> 
 
+#include "asset.h"
 #include "stock.h"
 
 int main()
