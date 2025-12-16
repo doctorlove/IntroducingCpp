@@ -33,7 +33,7 @@ cl --version
 
 This book shows you how to build your code from a prompt. 
 You can find an app instead, for example Jet Brain's [CLion](https://www.jetbrains.com/clion/). 
-Such tools provide a user interafce, where you can click buttons to build and run code. 
+Such tools provide a user interface, where you can click buttons to build and run code. 
 If you try the prompt a little, it might help you remember what is happening behind the buttons clicks. 
 
 ## Build some code
@@ -61,7 +61,7 @@ g++ chapter_01/hello.cpp
 ``` 
 
 If you are using `clang++`, state that instead of `g++`. 
-For Windowws, you get a long warning about exception unless you specify `/EHsc` when you build. 
+For Windows, you get a long warning about exceptions unless you specify `/EHsc` when you build. 
 You can add this after `cl.exe`: 
 
 ```
