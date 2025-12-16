@@ -21,7 +21,10 @@ or
 clang++ --version
 ```
 
+If neither works, you need to install one of these. 
+
 If you are using Windows, you may have `g++` or `clang++` or you can install Visual Studio. 
+You can get `g++` or `clang++` from [Mingw](https://www.mingw-w64.org/) or Visual Studio from the [Community edition page](https://visualstudio.microsoft.com/vs/community/). 
 If you open a developer command prompt, you can see the version number of your compiler like this:
 
 ```
@@ -68,7 +71,7 @@ IntroducingCpp>cl.exe /EHsc chapter_01\hello.cpp
 (`cl.exe` is the compiler, one step in building C++ code. The book explains in more detail). 
 
 You will either see a file called `a.out` or `a.exe` generated. 
-You can then run this and will see a greeting on ypur prompt: 
+You can then run this and will see a greeting on your prompt: 
 
 ```
 IntroducingCpp>a.exe
