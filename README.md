@@ -23,7 +23,7 @@ clang++ --version
 
 <!-- link to mingw? --!>
 
-If you are using Windows, you may have `g{plus}{plus}` or `clang{plus}{plus}` or you can install Visual Studio. 
+If you are using Windows, you may have `g++` or `clang++` or you can install Visual Studio. 
 If you open a developer command prompt, you can see the version number of your compiler like this:
 
 ```
