@@ -33,13 +33,13 @@ namespace stock_prices
         void fulfill_buy_order()
         {
             --number_of_assets;
-            funds += asset->get_price();
+            funds -= asset->get_price();
         }
 
         void fulfill_sell_order()
         {
             ++number_of_assets;
-            funds -= asset->get_price();
+            funds += asset->get_price();
         }
     };
 
